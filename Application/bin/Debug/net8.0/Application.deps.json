@@ -18,6 +18,7 @@
           "MySql.EntityFrameworkCore": "8.0.5",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2",
           "Security": "1.0.0",
+          "Support": "1.0.0",
           "Swashbuckle.AspNetCore": "6.6.2"
         },
         "runtime": {
@@ -1179,7 +1180,8 @@
       "Domain/1.0.0": {
         "dependencies": {
           "Infrastructure": "1.0.0",
-          "Security": "1.0.0"
+          "Security": "1.0.0",
+          "Support": "1.0.0"
         },
         "runtime": {
           "Domain.dll": {}
@@ -1191,6 +1193,7 @@
           "Humanizer": "2.14.1",
           "Microsoft.EntityFrameworkCore": "8.0.7",
           "MySql.EntityFrameworkCore": "8.0.5",
+          "Support": "1.0.0",
           "Swashbuckle": "5.6.0",
           "Swashbuckle.AspNetCore": "6.6.2"
         },
@@ -1207,6 +1210,14 @@
         },
         "runtime": {
           "Security.dll": {}
+        }
+      },
+      "Support/1.0.0": {
+        "dependencies": {
+          "EntityFrameworkCore.CreatedUpdatedDate": "8.0.0"
+        },
+        "runtime": {
+          "Support.dll": {}
         }
       }
     }
@@ -2082,6 +2093,11 @@
       "sha512": ""
     },
     "Security/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Support/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

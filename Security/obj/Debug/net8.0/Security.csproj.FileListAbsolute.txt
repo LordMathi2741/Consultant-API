@@ -14,3 +14,5 @@
 /Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/obj/Debug/net8.0/refint/Security.dll
 /Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/obj/Debug/net8.0/Security.pdb
 /Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/obj/Debug/net8.0/ref/Security.dll
+/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/bin/Debug/net8.0/Support.dll
+/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/bin/Debug/net8.0/Support.pdb

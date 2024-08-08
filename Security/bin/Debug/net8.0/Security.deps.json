@@ -1949,11 +1949,20 @@
           "Humanizer": "2.14.1",
           "Microsoft.EntityFrameworkCore": "8.0.7",
           "MySql.EntityFrameworkCore": "8.0.5",
+          "Support": "1.0.0",
           "Swashbuckle": "5.6.0",
           "Swashbuckle.AspNetCore": "4.0.0"
         },
         "runtime": {
           "Infrastructure.dll": {}
+        }
+      },
+      "Support/1.0.0": {
+        "dependencies": {
+          "EntityFrameworkCore.CreatedUpdatedDate": "8.0.0"
+        },
+        "runtime": {
+          "Support.dll": {}
         }
       }
     }
@@ -3246,6 +3255,11 @@
       "hashPath": "zstdsharp.port.0.8.0.nupkg.sha512"
     },
     "Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Support/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

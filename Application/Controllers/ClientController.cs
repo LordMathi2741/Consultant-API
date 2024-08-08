@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Application.DTO.Request;
 using Application.DTO.Response;
+using Application.Filters;
 using AutoMapper;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,7 @@ namespace Application.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> GetClients()
         {
             var clients = await clientRepository.GetAllAsync();
@@ -60,6 +62,7 @@ namespace Application.Controllers
         [HttpGet("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> GetClientById( long id)
         {
             var client = await clientRepository.GetByIdAsync(id);
@@ -72,6 +75,7 @@ namespace Application.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> UpdateClient( long id, [FromBody] ClientRequest clientRequest)
         {
             var client = await clientRepository.GetByIdAsync(id);
@@ -85,6 +89,7 @@ namespace Application.Controllers
         [HttpPut("change-role/{id:long}/{role}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> UpdateClientRole(long id, [FromRoute] string role)
         {
             var client = await clientRepository.GetByIdAsync(id);
@@ -97,6 +102,7 @@ namespace Application.Controllers
         [HttpDelete("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> DeleteClient([FromRoute] long id)
         {
             var client = await clientRepository.GetByIdAsync(id);
