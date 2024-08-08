@@ -10,8 +10,7 @@ public partial class Client
     public string Password { get;  set; }
     public string Username { get;  set; }
     public string Company { get;  set; }
-
-    public string Type { get; set; }
+    
     public string Firstname { get; set; }
     public string Lastname { get; set; }
     
@@ -32,10 +31,9 @@ public partial class Client
         Password = string.Empty;
         Username = string.Empty;
         Company = string.Empty;
-        Type = string.Empty;
     }
     
-    public Client(string firstName, string lastName, int dni, string email, string phone, string address, string password, string username, string company,string type)
+    public Client(string firstName, string lastName, int dni, string email, string phone, string address, string password, string username, string company)
     {
         Firstname = firstName;
         Lastname = lastName;
@@ -46,7 +44,6 @@ public partial class Client
         Password = password;
         Username = username;
         Company = company;
-        Type = type;
         Role = EClientRoles.Default.ToString();
         CreatedDate = DateTimeOffset.Now;
         UpdatedDate = DateTimeOffset.Now;

@@ -3,8 +3,9 @@ using Application.Middleware;
 using Domain.Configuration.ASP.Configuration;
 using Domain.Interfaces;
 using Domain.Repositories;
+using Domain.Validation;
+using Domain.Validation.Interfaces;
 using Infrastructure.Context;
-using Infrastructure.Context.Configuration.ASP.Configuration;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -78,9 +79,19 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IVehicleRepository,VehicleRepository>();
+builder.Services.AddScoped<ICylinderRepository,CylinderRepository>();
+builder.Services.AddScoped<IObservationRepository, ObservationRepository>();
+builder.Services.AddScoped<ICertifierRepository, CertifierRepository>();
+builder.Services.AddScoped<IOperationCenterRepository,OperationCenterRepository>();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+builder.Services.AddScoped<IValveRepository, ValveRepository>();
+
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
+builder.Services.AddScoped<IBusinessRulesValidator, BusinessRulesValidator>();
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();

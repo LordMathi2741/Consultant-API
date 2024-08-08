@@ -1,5 +1,6 @@
 using Domain.Exceptions;
 using Domain.Interfaces;
+using Domain.Validation.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
@@ -10,49 +11,14 @@ using Client = Support.Models.Client;
 
 namespace Domain.Repositories;
 
-public class ClientRepository(AppDbContext context, IUnitOfWork unitOfWork, ITokenService tokenService, IEncryptService encryptService ) : BaseRepository<Client>(context), IClientRepository
+public class ClientRepository(AppDbContext context, IUnitOfWork unitOfWork, ITokenService tokenService, IEncryptService encryptService, IBusinessRulesValidator businessRulesValidator ) : BaseRepository<Client>(context), IClientRepository
 {
-    private const string Symbols = "@#$%^&*()_+";
-    private bool IsPasswordStrong(string password)
-    {
-        return password.Any(char.IsDigit) && password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(c => Symbols.Contains(c));
-    }
-
-    private void ValidateBusinessRules(Client client)
-    {
-        if (ClientWithEmailOrPasswordExists(client.Email, client.Password))
-        {
-            throw new ClientWithThisEmailOrPasswordAlreadyExistsException();
-        }
-
-        if (!Enum.IsDefined(typeof(EClientTypes), client.Type))
-        {
-            throw new InvalidClientTypeException();
-        }
-
-        if (client.Dni is < 10000000 or > 99999999)
-        {
-            throw new InvalidDniException(client.Dni);
-        }
-
-        if (!client.Email.Contains('@') || !client.Email.Contains('.') || !IsPasswordStrong(client.Password))
-        {
-            throw new InvalidEmailOrPasswordException();
-        }
-
-        if (client.Phone.Length < 9)
-        {
-            throw new InvalidPhoneNumberException(client.Phone);
-        }
-
-        if (ClientWithThisUsernameExists(client.Username))
-        {
-            throw new UsernameAlreadyExistsException(client.Username);
-        }
-    }
+   
+    
+    
     public async Task<Client> SignUp(Client client)
     {
-        ValidateBusinessRules(client);
+        businessRulesValidator.ValidateBusinessRules(client);
         var clientHashed = new Client
         {
             Username = client.Username,
@@ -62,7 +28,6 @@ public class ClientRepository(AppDbContext context, IUnitOfWork unitOfWork, ITok
             Email = client.Email,
             Phone = client.Phone,
             Dni = client.Dni,
-            Type = client.Type,
             Role = client.Role,
             Address = client.Address,
             Company = client.Company,
@@ -95,16 +60,7 @@ public class ClientRepository(AppDbContext context, IUnitOfWork unitOfWork, ITok
 
     public async Task<Client?> UpdateClient(Client client)
     {
-        ValidateBusinessRules(client);
-        if (ClientWithEmailOrPasswordExists(client.Email, client.Password))
-        {
-            throw new ClientWithThisEmailOrPasswordAlreadyExistsException();
-        }
-        if (!Enum.IsDefined(typeof(EClientTypes), client.Type))
-        {
-            throw new InvalidClientTypeException();
-        }
-        
+        businessRulesValidator.ValidateBusinessRules(client);
         client.UpdatedDate = DateTime.Now;
         context.Set<Client>().Update(client);
         await unitOfWork.CompleteAsync();
