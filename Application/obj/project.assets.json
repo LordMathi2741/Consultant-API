@@ -1750,7 +1750,8 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Infrastructure": "1.0.0",
-          "Security": "1.0.0"
+          "Security": "1.0.0",
+          "Support": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Domain.dll": {}
@@ -1767,6 +1768,7 @@
           "Humanizer": "2.14.1",
           "Microsoft.EntityFrameworkCore": "8.0.7",
           "MySql.EntityFrameworkCore": "8.0.5",
+          "Support": "1.0.0",
           "Swashbuckle": "5.6.0",
           "Swashbuckle.AspNetCore": "4.0.0"
         },
@@ -1791,6 +1793,19 @@
         },
         "runtime": {
           "bin/placeholder/Security.dll": {}
+        }
+      },
+      "Support/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "EntityFrameworkCore.CreatedUpdatedDate": "8.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Support.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Support.dll": {}
         }
       }
     }
@@ -4864,6 +4879,11 @@
       "type": "project",
       "path": "../Security/Security.csproj",
       "msbuildProject": "../Security/Security.csproj"
+    },
+    "Support/1.0.0": {
+      "type": "project",
+      "path": "../Support/Support.csproj",
+      "msbuildProject": "../Support/Support.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4878,6 +4898,7 @@
       "MySql.EntityFrameworkCore >= 8.0.5",
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.2",
       "Security >= 1.0.0",
+      "Support >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.6.2"
     ]
   },
@@ -4914,6 +4935,9 @@
             },
             "/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/Security.csproj": {
               "projectPath": "/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Security/Security.csproj"
+            },
+            "/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Support/Support.csproj": {
+              "projectPath": "/Users/lordmathi2741/Documents/Proyects/ASP NET/Consultant/Support/Support.csproj"
             }
           }
         }

@@ -1,4 +1,4 @@
-using Infrastructure.Models;
+using Client = Support.Models.Client;
 
 namespace Security.Interfaces;
 

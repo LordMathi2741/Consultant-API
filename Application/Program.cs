@@ -1,5 +1,6 @@
 using Application.DTO.Mapper;
 using Application.Middleware;
+using Domain.Configuration.ASP.Configuration;
 using Domain.Interfaces;
 using Domain.Repositories;
 using Infrastructure.Context;

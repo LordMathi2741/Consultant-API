@@ -1,5 +1,5 @@
 using Infrastructure.Interfaces;
-using Infrastructure.Models;
+using Client = Support.Models.Client;
 
 namespace Domain.Interfaces;
 

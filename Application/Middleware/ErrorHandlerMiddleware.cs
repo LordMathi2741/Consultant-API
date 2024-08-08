@@ -1,5 +1,5 @@
 using System.Net;
-using Infrastructure.Exceptions;
+using Domain.Exceptions;
 using Newtonsoft.Json;
 
 namespace Application.Middleware;

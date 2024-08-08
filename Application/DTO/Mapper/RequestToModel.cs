@@ -1,6 +1,6 @@
 using Application.DTO.Request;
 using AutoMapper;
-using Infrastructure.Models;
+using Client = Support.Models.Client;
 
 namespace Application.DTO.Mapper;
 

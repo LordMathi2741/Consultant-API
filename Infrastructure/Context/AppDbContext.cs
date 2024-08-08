@@ -1,6 +1,6 @@
 using Infrastructure.Context.Configuration.EFC.Configuration.Extensions;
-using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Client = Support.Models.Client;
 
 namespace Infrastructure.Context;
 

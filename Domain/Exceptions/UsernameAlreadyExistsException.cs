@@ -1,4 +1,4 @@
-namespace Infrastructure.Exceptions;
+namespace Domain.Exceptions;
 
 public class UsernameAlreadyExistsException : Exception
 {

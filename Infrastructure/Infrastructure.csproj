@@ -19,4 +19,8 @@
       <Folder Include="Context\Configuration\EFC\Configuration\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Support\Support.csproj" />
+    </ItemGroup>
+
 </Project>

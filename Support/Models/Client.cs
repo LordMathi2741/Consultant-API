@@ -1,4 +1,4 @@
-namespace Infrastructure.Models;
+namespace Support.Models;
 
 public partial class Client
 {

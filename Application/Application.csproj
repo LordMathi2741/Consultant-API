@@ -24,6 +24,7 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
       <ProjectReference Include="..\Security\Security.csproj" />
+      <ProjectReference Include="..\Support\Support.csproj" />
     </ItemGroup>
 
 </Project>

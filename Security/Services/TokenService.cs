@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using System.Text;
-using Infrastructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Security.Interfaces;
+using Client = Support.Models.Client;
 
 namespace Security.Services;
 

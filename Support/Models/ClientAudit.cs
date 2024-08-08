@@ -1,6 +1,8 @@
+
+
 using EntityFrameworkCore.CreatedUpdatedDate.Contracts;
 
-namespace Infrastructure.Models;
+namespace Support.Models;
 
 public partial class Client : IEntityWithCreatedUpdatedDate
 {

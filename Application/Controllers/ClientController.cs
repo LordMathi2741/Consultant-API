@@ -4,8 +4,8 @@ using Application.DTO.Request;
 using Application.DTO.Response;
 using AutoMapper;
 using Domain.Interfaces;
-using Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
+using Client = Support.Models.Client;
 
 namespace Application.Controllers
 {

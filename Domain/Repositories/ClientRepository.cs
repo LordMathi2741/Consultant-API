@@ -1,11 +1,12 @@
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Infrastructure.Context;
-using Infrastructure.Exceptions;
 using Infrastructure.Interfaces;
-using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Security.Interfaces;
+using Support.Models;
+using Client = Support.Models.Client;
 
 namespace Domain.Repositories;
 

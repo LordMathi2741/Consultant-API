@@ -1,8 +1,7 @@
-
 using Infrastructure.Context.Configuration.ASP.Configuration.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Infrastructure.Context.Configuration.ASP.Configuration;
+namespace Domain.Configuration.ASP.Configuration;
 
 public class KebabCaseRouteNamingConvention : IControllerModelConvention
 {
