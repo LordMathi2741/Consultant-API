@@ -13,6 +13,16 @@ public class BusinessRulesValidator : IBusinessRulesValidator
     {
         return password.Any(char.IsDigit) && password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(c => Symbols.Contains(c));
     }
+    
+    private bool IsValidPhoneNumber(string phone)
+    {
+        return phone.Length >= 9;
+    }
+    
+    private bool IsValidDni(int dni)
+    {
+        return dni is >= 10000000 and <= 99999999;
+    }
 
     private readonly AppDbContext _context;
     
@@ -30,7 +40,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
         }
         
 
-        if (client.Dni is < 10000000 or > 99999999)
+        if (!IsValidDni(client.Dni))
         {
             throw new InvalidDniException(client.Dni);
         }
@@ -40,7 +50,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
             throw new InvalidEmailOrPasswordException();
         }
 
-        if (client.Phone.Length < 9)
+        if (!IsValidPhoneNumber(client.Phone))
         {
             throw new InvalidPhoneNumberException(client.Phone);
         }
@@ -53,11 +63,11 @@ public class BusinessRulesValidator : IBusinessRulesValidator
 
     public void ValidateBusinessRules(Owner owner)
     {
-        if (owner.Dni is < 10000000 or > 99999999)
+        if (!IsValidDni(owner.Dni))
         {
             throw new InvalidDniException(owner.Dni);
         }
-        if (owner.Phone.Length < 9)
+        if (!IsValidPhoneNumber(owner.Phone))
         {
             throw new InvalidPhoneNumberException(owner.Phone);
         }
@@ -75,7 +85,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
 
     public void ValidateBusinessRules(OperationCenter operationCenter)
     {
-        if (operationCenter.Phone.Length < 9)
+        if (!IsValidPhoneNumber(operationCenter.Phone))
         {
             throw new InvalidPhoneNumberException(operationCenter.Phone);
         }
