@@ -21,6 +21,7 @@ public class CertifierController(ICertifierRepository certifierRepository, IMapp
     
     [HttpPost]
     [ProducesResponseType(201)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateCertifier([FromBody] CertifierRequest certifierRequest)
     {
@@ -32,7 +33,6 @@ public class CertifierController(ICertifierRepository certifierRepository, IMapp
     
     [HttpGet]
     [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetCertifiers()
     {
@@ -56,6 +56,7 @@ public class CertifierController(ICertifierRepository certifierRepository, IMapp
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateCertifier(long id, [FromBody] CertifierRequest certifierRequest)
     {

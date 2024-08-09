@@ -21,7 +21,6 @@ public class OwnerController(IOwnerRepository ownerRepository, IMapper mapper) :
     
         [HttpGet]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [CustomAuthorize("Admin", "Tester")]
         public async Task<IActionResult> GetOwners()
         {
@@ -44,6 +43,7 @@ public class OwnerController(IOwnerRepository ownerRepository, IMapper mapper) :
         
         [HttpPost]
         [ProducesResponseType(201)]
+        [ProducesResponseType(409)]
         [CustomAuthorize("Admin", "Tester", "Default")]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerRequest ownerRequest)
         {
@@ -56,6 +56,7 @@ public class OwnerController(IOwnerRepository ownerRepository, IMapper mapper) :
         [HttpPut("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
         [CustomAuthorize("Admin", "Tester")]
         public async Task<IActionResult> UpdateOwner(long id, [FromBody] OwnerRequest ownerRequest)
         {

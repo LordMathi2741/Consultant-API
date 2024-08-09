@@ -1,5 +1,6 @@
 using Application.DTO.Response;
 using AutoMapper;
+using Support.Factory.Company;
 using Support.Factory.Cylinder;
 using Support.Models;
 
@@ -17,5 +18,12 @@ public class ModelToResponse : Profile
         CreateMap<Owner,OwnerResponse>();
         CreateMap<Valve, ValveResponse>();
         CreateMap<Vehicle, VehicleResponse>();
+        
+        CreateMap<CylinderProvider,CylinderProviderResponse>();
+        CreateMap<InstallerCompany, InstallerCompanyResponse>();
+        CreateMap<ProviderCompany,ProviderCompanyResponse>();
+        CreateMap<WorkShopCompany, WorkShopCompanyResponse>();
+        CreateMap<WorkShopCylinder, WorkShopCylinderResponse>();
+        CreateMap<WorkShop, WorkShopResponse>();
     }
 }

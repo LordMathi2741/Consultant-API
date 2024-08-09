@@ -94,7 +94,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.Volume).IsRequired();
         modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.MadeDate).IsRequired();
         modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.SerialNumber).IsRequired();
-
+        
         modelBuilder.Entity<ProviderCompany>().HasKey(pc => pc.Id);
         modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Address).IsRequired();
@@ -102,6 +102,14 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Ruc).IsRequired();
         modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Phone).IsRequired();
         modelBuilder.Entity<ProviderCompany>().Property(pc => pc.ContactPerson).IsRequired();
+        
+
+        modelBuilder.Entity<InstallerCompany>().HasKey(ic => ic.Id);
+        modelBuilder.Entity<InstallerCompany>().Property(ic => ic.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<InstallerCompany>().Property(ic => ic.Address).IsRequired();
+        modelBuilder.Entity<InstallerCompany>().Property(ic => ic.SocialReason).IsRequired();
+        modelBuilder.Entity<InstallerCompany>().Property(ic => ic.Ruc).IsRequired();
+        
 
         modelBuilder.Entity<CylinderProvider>().HasKey(cp => cp.Id);
         modelBuilder.Entity<CylinderProvider>().Property(cp => cp.Id).ValueGeneratedOnAdd();
@@ -124,6 +132,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<User>().HasMany<WorkShopCompany>().WithOne().HasForeignKey(wc => wc.UserId);
         modelBuilder.Entity<WorkShopCompany>().HasMany<WorkShop>().WithOne().HasForeignKey(w => w.WorkShopCompanyId);
         modelBuilder.Entity<WorkShop>().HasMany<WorkShopCylinder>().WithOne().HasForeignKey(wc => wc.WorkShopId);
+        modelBuilder.Entity<WorkShop>().HasMany<InstallerCompany>().WithOne().HasForeignKey(ic => ic.WorkShopId);
         modelBuilder.Entity<User>().HasMany<ProviderCompany>().WithOne().HasForeignKey(pc => pc.UserId);
         modelBuilder.Entity<ProviderCompany>().HasMany<CylinderProvider>().WithOne().HasForeignKey(cp => cp.ProviderCompanyId);
         

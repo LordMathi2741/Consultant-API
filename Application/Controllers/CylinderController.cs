@@ -25,6 +25,7 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     
     [HttpPost]
     [ProducesResponseType(201)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     
     public async Task<IActionResult> CreateCylinder([FromBody] CylinderRequest cylinderRequest)
@@ -62,6 +63,7 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateCylinder(long id, [FromBody] CylinderRequest cylinderRequest)
     {

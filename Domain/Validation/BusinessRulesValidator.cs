@@ -29,7 +29,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
 
     private bool IsValidRuc(string ruc)
     {
-        return ruc.Length == 11;
+          return ruc.Length == 11;
     }
     
     private bool IsFutureDate(DateTimeOffset? date)
@@ -175,7 +175,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
             throw new InvalidPhoneNumberException(workShop.Phone);
         }
 
-        if (_context.Set<WorkShop>().Any(w => w.Id == workShop.Id))
+        if (_context.Set<WorkShop>().Any(w => w.WorkShopCompanyId == workShop.WorkShopCompanyId))
         {
             if(!IsFiveYearsOld(DateTimeOffset.Now))
             {

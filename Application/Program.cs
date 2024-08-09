@@ -89,6 +89,7 @@ builder.Services.AddScoped<ICertifierRepository, CertifierRepository>();
 builder.Services.AddScoped<IOperationCenterRepository,OperationCenterRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 builder.Services.AddScoped<IValveRepository, ValveRepository>();
+
 builder.Services.AddScoped<IWorkShopRepository, WorkShopRepository>();
 builder.Services.AddScoped<IWorkShopCompanyRepository,WorkShopCompanyRepository>();
 builder.Services.AddScoped<IWorkShopCylinderRepository, WorkShopCylinderRepository>();

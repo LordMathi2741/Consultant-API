@@ -1,5 +1,6 @@
 using Application.DTO.Request;
 using AutoMapper;
+using Support.Factory.Company;
 using Support.Factory.Cylinder;
 using Support.Models;
 
@@ -17,5 +18,12 @@ public class RequestToModel : Profile
         CreateMap<OwnerRequest, Owner>();
         CreateMap<ValveRequest, Valve>();
         CreateMap<VehicleRequest, Vehicle>();
+        
+        CreateMap<CylinderProviderRequest, CylinderProvider>();
+        CreateMap<InstallerCompanyRequest, InstallerCompany>();
+        CreateMap<ProviderCompanyRequest, ProviderCompany>();
+        CreateMap<WorkShopCompanyRequest, WorkShopCompany>();
+        CreateMap<WorkShopCylinderRequest, WorkShopCylinder>();
+        CreateMap<WorkShopRequest, WorkShop>();
     }
 }

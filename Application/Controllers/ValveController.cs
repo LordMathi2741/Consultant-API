@@ -20,7 +20,6 @@ public class ValveController(IMapper mapper, IValveRepository valveRepository) :
 {
     [HttpGet]
     [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetValves()
     {
@@ -43,6 +42,7 @@ public class ValveController(IMapper mapper, IValveRepository valveRepository) :
     
     [HttpPost]
     [ProducesResponseType(201)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateValve([FromBody] ValveRequest valveRequest)
     {
@@ -55,6 +55,7 @@ public class ValveController(IMapper mapper, IValveRepository valveRepository) :
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateValve(long id, [FromBody] ValveRequest valveRequest)
     {

@@ -20,6 +20,7 @@ public class VehicleController(IMapper mapper, IVehicleRepository vehicleReposit
 {
     [HttpPost]
     [ProducesResponseType(201)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateVehicle([FromBody] VehicleRequest vehicleRequest)
     {
@@ -31,7 +32,6 @@ public class VehicleController(IMapper mapper, IVehicleRepository vehicleReposit
     
     [HttpGet]
     [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetVehicles()
     {
@@ -55,6 +55,7 @@ public class VehicleController(IMapper mapper, IVehicleRepository vehicleReposit
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateVehicle(long id, [FromBody] VehicleRequest vehicleRequest)
     {

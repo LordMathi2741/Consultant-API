@@ -22,6 +22,7 @@ namespace Application.Controllers
         [HttpPost("sign-up")]
         [AllowAnonymous]
         [ProducesResponseType(201)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> SignUp([FromBody] ClientRequest clientRequest)
         {
            var client = mapper.Map<ClientRequest, User>(clientRequest);
@@ -75,6 +76,7 @@ namespace Application.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> UpdateClient( long id, [FromBody] ClientRequest clientRequest)
         {

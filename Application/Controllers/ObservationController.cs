@@ -32,7 +32,6 @@ public class ObservationController(IObservationRepository observationRepository,
     
     [HttpGet]
     [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetObservations()
     {

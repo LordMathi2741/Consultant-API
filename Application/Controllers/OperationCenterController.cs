@@ -21,7 +21,6 @@ public class OperationCenterController( IOperationCenterRepository operationCent
     
         [HttpGet]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [CustomAuthorize("Admin", "Tester")]
         public async Task<IActionResult> GetOperationCenters()
         {
@@ -32,7 +31,6 @@ public class OperationCenterController( IOperationCenterRepository operationCent
     
         [HttpGet("{id:long}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [CustomAuthorize("Admin", "Tester")]
         public async Task<IActionResult> GetOperationCenterById(long id)
         {
@@ -44,6 +42,7 @@ public class OperationCenterController( IOperationCenterRepository operationCent
         
         [HttpPost]
         [ProducesResponseType(200)]
+        [ProducesResponseType(409)]
         [CustomAuthorize("Admin", "Tester", "Default")]
         public async Task<IActionResult> CreateOperationCenter([FromBody] OperationCenterRequest operationCenterRequest)
         {
@@ -56,6 +55,7 @@ public class OperationCenterController( IOperationCenterRepository operationCent
         [HttpPut("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
         [CustomAuthorize("Admin", "Tester")]
         public async Task<IActionResult> UpdateOperationCenter(long id, [FromBody] OperationCenterRequest operationCenterRequest)
         {
