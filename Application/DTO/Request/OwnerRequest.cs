@@ -10,6 +10,5 @@ public class OwnerRequest
     public string District { get; set; }
     public string Province { get; set; }
     public string Department { get; set; }
-    
-    public long OperationCenterId { get; set; }
+
 }

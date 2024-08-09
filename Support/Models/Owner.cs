@@ -12,7 +12,6 @@ public partial class Owner
     public string Province { get; set; }
     public string Department { get; set; }
     
-    public long OperationCenterId { get; set; }
     
 }
 
@@ -28,9 +27,8 @@ public partial class Owner
         District = string.Empty;
         Province = string.Empty;
         Department = string.Empty;
-        OperationCenterId = 0;
     }
-    public Owner(string firstName, string lastName, int dni, string address, string phone, string district, string province, string department, long operationCenterId)
+    public Owner(string firstName, string lastName, int dni, string address, string phone, string district, string province, string department)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -40,7 +38,6 @@ public partial class Owner
         District = district;
         Province = province;
         Department = department;
-        OperationCenterId = operationCenterId;
     }
     
 }

@@ -16,6 +16,6 @@ public class ModelToResponse : Profile
         CreateMap<OperationCenter, OperationCenterResponse>();
         CreateMap<Owner,OwnerResponse>();
         CreateMap<Valve, ValveResponse>();
-        CreateMap<VehicleResponse, VehicleResponse>();
+        CreateMap<Vehicle, VehicleResponse>();
     }
 }

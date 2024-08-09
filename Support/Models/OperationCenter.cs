@@ -9,7 +9,7 @@ public partial class OperationCenter
     public string Address { get; set; }
     public string Phone { get; set; }
     
-    public long OwnerId { get; set; }
+    public long ClientId { get; set; }
 }
 
 public partial class OperationCenter
@@ -20,15 +20,16 @@ public partial class OperationCenter
         LegalRepresentative = string.Empty;
         Address = string.Empty;
         Phone = string.Empty;
-        OwnerId = 0;
+        ClientId = 0;
     }
-    public OperationCenter( string name, string legalRepresentative, string address, string phone, long ownerId)
+    
+    public OperationCenter( string name, string legalRepresentative, string address, string phone, long clientId)
     {
         Name = name;
         LegalRepresentative = legalRepresentative;
         Address = address;
         Phone = phone;
-        OwnerId = ownerId;
+        ClientId = clientId;
     }
  
 }

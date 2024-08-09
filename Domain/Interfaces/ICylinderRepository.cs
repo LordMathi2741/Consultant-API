@@ -9,5 +9,4 @@ public interface ICylinderRepository : IBaseRepository<Cylinder>
     Task<Cylinder?> UpdateCylinderAsync(Cylinder cylinder);
     Task DeleteCylinderAsync(Cylinder cylinder);
     
-    Task<long> CountCylindersByVehicleIdAsync(long vehicleId);
 }

@@ -6,6 +6,8 @@ public interface IBusinessRulesValidator
 {
     void ValidateBusinessRules(Client client);
     void ValidateBusinessRules(Owner owner);
-    void ValidateBusinessRules(Cylinder cylinder);
+    void ValidateBusinessRules(Vehicle vehicle);
+
+    void ValidateBusinessRules(OperationCenter operationCenter);
 
 }

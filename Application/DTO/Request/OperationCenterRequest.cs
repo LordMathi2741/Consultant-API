@@ -7,5 +7,5 @@ public class OperationCenterRequest
     public string Address { get; set; }
     public string Phone { get; set; }
     
-    public long OwnerId { get; set; }
+    public long ClientId { get; set; }
 }

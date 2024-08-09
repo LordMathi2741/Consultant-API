@@ -72,10 +72,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Observation>().Property(ob => ob.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Observation>().Property(ob => ob.Content);
 
-        modelBuilder.Entity<Vehicle>().HasMany<Cylinder>().WithOne().HasForeignKey(c => c.VehicleId);
-        modelBuilder.Entity<Valve>().HasOne<Cylinder>().WithMany().HasForeignKey(v => v.CylinderId);
-        modelBuilder.Entity<Owner>().HasMany<Vehicle>().WithOne().HasForeignKey(o => o.OwnerId);
-        modelBuilder.Entity<Owner>().HasOne<OperationCenter>().WithMany().HasForeignKey(o => o.OperationCenterId);
+        modelBuilder.Entity<Client>().HasMany<Cylinder>().WithOne().HasForeignKey(cy => cy.ClientId);
+        modelBuilder.Entity<Cylinder>().HasOne<Valve>().WithOne().HasForeignKey<Valve>(v => v.CylinderId);
+        modelBuilder.Entity<Owner>().HasMany<Vehicle>().WithOne().HasForeignKey(v => v.OwnerId);
+        modelBuilder.Entity<Client>().HasMany<OperationCenter>().WithOne().HasForeignKey(o => o.ClientId);
+        modelBuilder.Entity<OperationCenter>().HasOne<Certifier>().WithOne()
+            .HasForeignKey<Certifier>(v => v.OperationCenterId);
         modelBuilder.Entity<Client>().HasMany<Observation>().WithOne().HasForeignKey(o => o.ClientId);
         
         

@@ -9,4 +9,5 @@ public interface IVehicleRepository : IBaseRepository<Vehicle>
     Task<Vehicle?> UpdateVehicleAsync(Vehicle vehicle);
     Task DeleteVehicle(Vehicle vehicle);
     
+    
 }

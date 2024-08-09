@@ -61,6 +61,7 @@ public class VehicleController(IMapper mapper, IVehicleRepository vehicleReposit
         var vehicle = await vehicleRepository.GetByIdAsync(id);
         if (vehicle == null) return NotFound();
         mapper.Map(vehicleRequest, vehicle);
+        await vehicleRepository.UpdateVehicleAsync(vehicle);
         var vehicleResponse = mapper.Map<Vehicle, VehicleResponse>(vehicle);
         return Ok(vehicleResponse);
     }

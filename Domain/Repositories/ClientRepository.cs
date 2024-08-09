@@ -47,16 +47,7 @@ public class ClientRepository(AppDbContext context, IUnitOfWork unitOfWork, ITok
         var token = tokenService.GenerateToken(client);
         return token;
     }
-
-    public bool ClientWithEmailOrPasswordExists(string email, string password)
-    {
-        return context.Set<Client>().Any(c => c.Email == email && c.Password == password);
-    }
-
-    public bool ClientWithThisUsernameExists(string username)
-    {
-        return context.Set<Client>().Any(c => c.Username == username);
-    }
+    
 
     public async Task<Client?> UpdateClient(Client client)
     {

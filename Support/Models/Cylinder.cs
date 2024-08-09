@@ -6,7 +6,7 @@ public partial class Cylinder
     public string Brand { get; set; }
     public string SerieNumber { get; set; }
     public int Capacity { get; set; }
-    public long VehicleId { get; set; }
+    public long ClientId{ get; set; }
 }
 
 public partial class Cylinder
@@ -16,14 +16,14 @@ public partial class Cylinder
         Brand = string.Empty;
         SerieNumber = string.Empty;
         Capacity = 0;
-        VehicleId = 0;
+        ClientId = 0;
     }
     
-    public Cylinder(string brand, string serieNumber, int capacity, long vehicleId)
+    public Cylinder(string brand, string serieNumber, int capacity, long clientId)
     {
         Brand = brand;
         SerieNumber = serieNumber;
         Capacity = capacity;
-        VehicleId = vehicleId;
+        ClientId = clientId;
     }
 }

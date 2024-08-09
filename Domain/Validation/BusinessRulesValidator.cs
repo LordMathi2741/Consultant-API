@@ -1,6 +1,7 @@
 using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Validation.Interfaces;
+using Infrastructure.Context;
 using Support.Models;
 
 namespace Domain.Validation;
@@ -12,13 +13,18 @@ public class BusinessRulesValidator : IBusinessRulesValidator
     {
         return password.Any(char.IsDigit) && password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(c => Symbols.Contains(c));
     }
+
+    private AppDbContext _context;
     
-    private readonly IClientRepository _clientRepository;
-    private readonly ICylinderRepository _cylinderRepository;
+    public BusinessRulesValidator(AppDbContext context)
+    {
+        _context = context;
+    }
+     
     
     public void ValidateBusinessRules(Client client)
     {
-        if (_clientRepository.ClientWithEmailOrPasswordExists(client.Email, client.Password))
+        if (_context.Set<Client>().Any(c => c.Email == client.Email || c.Email == client.Email))
         {
             throw new ClientWithThisEmailOrPasswordAlreadyExistsException();
         }
@@ -39,13 +45,9 @@ public class BusinessRulesValidator : IBusinessRulesValidator
             throw new InvalidPhoneNumberException(client.Phone);
         }
 
-        if (_clientRepository.ClientWithThisUsernameExists(client.Username))
+        if (_context.Set<Client>().Any(c => c.Username == client.Username))
         {
             throw new UsernameAlreadyExistsException(client.Username);
-        }
-        if (_clientRepository.ClientWithEmailOrPasswordExists(client.Email, client.Password))
-        {
-            throw new ClientWithThisEmailOrPasswordAlreadyExistsException();
         }
     }
 
@@ -62,11 +64,20 @@ public class BusinessRulesValidator : IBusinessRulesValidator
         
     }
 
-    public void ValidateBusinessRules(Cylinder cylinder)
+    public void ValidateBusinessRules(Vehicle vehicle)
     {
-        if (_cylinderRepository.CountCylindersByVehicleIdAsync(cylinder.VehicleId).Result >= 4)
+        if (_context.Set<Vehicle>().Count() >= 14)
         {
             throw new VehicleWithMaxCylindersException();
+        }
+        
+    }
+
+    public void ValidateBusinessRules(OperationCenter operationCenter)
+    {
+        if (operationCenter.Phone.Length < 9)
+        {
+            throw new InvalidPhoneNumberException(operationCenter.Phone);
         }
     }
 }
