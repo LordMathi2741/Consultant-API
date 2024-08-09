@@ -14,7 +14,7 @@ public class BusinessRulesValidator : IBusinessRulesValidator
         return password.Any(char.IsDigit) && password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(c => Symbols.Contains(c));
     }
 
-    private AppDbContext _context;
+    private readonly AppDbContext _context;
     
     public BusinessRulesValidator(AppDbContext context)
     {
