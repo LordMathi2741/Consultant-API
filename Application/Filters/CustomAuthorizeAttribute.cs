@@ -15,7 +15,7 @@ public class CustomAuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        var user = context.HttpContext.Items["User"] as Client;
+        var user = context.HttpContext.Items["User"] as User;
         if (user == null || !_roles.Any(role => user.Role.Contains(role)))
         {
             context.Result = new ForbidResult();

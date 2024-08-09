@@ -2,7 +2,7 @@ namespace Domain.Exceptions;
 
 public class ClientWithThisEmailOrPasswordAlreadyExistsException : Exception
 {
-    public ClientWithThisEmailOrPasswordAlreadyExistsException() : base("Client with this email and password already exists")
+    public ClientWithThisEmailOrPasswordAlreadyExistsException() : base("User with this email and password already exists")
     {
     }
 }

@@ -15,7 +15,7 @@ public class AuthenticacionMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, ITokenService tokenService, IClientRepository userRepository)
+    public async Task Invoke(HttpContext context, ITokenService tokenService, IUserRepository userRepository)
     {
         //attrubute allow anonymus
         var allowAnonymous = await IsAllowAnonymousAsync(context);

@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Support.Factory.Cylinder;
 using Support.Models;
 
 namespace Domain.Repositories;
@@ -12,6 +13,7 @@ public class CylinderRepository(AppDbContext context, IUnitOfWork unitOfWork) : 
 {
     public async Task<Cylinder> AddCylinderAsync(Cylinder cylinder)
     {
+        
         await context.Set<Cylinder>().AddAsync(cylinder);
         await unitOfWork.CompleteAsync();
         return cylinder;

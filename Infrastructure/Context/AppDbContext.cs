@@ -1,7 +1,9 @@
 using Infrastructure.Context.Configuration.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Support.Factory;
+using Support.Factory.Company;
+using Support.Factory.Cylinder;
 using Support.Models;
-using Client = Support.Models.Client;
 
 namespace Infrastructure.Context;
 
@@ -16,17 +18,17 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Client>().HasKey(c => c.Id);
-        modelBuilder.Entity<Client>().Property(c => c.Id).ValueGeneratedOnAdd();
-        modelBuilder.Entity<Client>().Property(c => c.Email).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Password).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Firstname).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Lastname).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Phone).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Address).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Company).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Dni).IsRequired();
-        modelBuilder.Entity<Client>().Property(c => c.Role).IsRequired();
+        modelBuilder.Entity<User>().HasKey(c => c.Id);
+        modelBuilder.Entity<User>().Property(c => c.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<User>().Property(c => c.Email).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Password).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Firstname).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Lastname).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Phone).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Address).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Company).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Dni).IsRequired();
+        modelBuilder.Entity<User>().Property(c => c.Role).IsRequired();
 
 
         modelBuilder.Entity<Vehicle>().HasKey(v => v.Id);
@@ -72,13 +74,58 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Observation>().Property(ob => ob.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Observation>().Property(ob => ob.Content);
 
-        modelBuilder.Entity<Client>().HasMany<Cylinder>().WithOne().HasForeignKey(cy => cy.ClientId);
+
+        modelBuilder.Entity<WorkShopCompany>().HasKey(wc => wc.Id);
+        modelBuilder.Entity<WorkShopCompany>().Property(wc => wc.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<WorkShopCompany>().Property(wc => wc.Address).IsRequired();
+        modelBuilder.Entity<WorkShopCompany>().Property(wc => wc.Name).IsRequired();
+        modelBuilder.Entity<WorkShopCompany>().Property(wc => wc.Ruc).IsRequired();
+        modelBuilder.Entity<WorkShopCompany>().Property(wc => wc.Phone).IsRequired();
+
+        modelBuilder.Entity<WorkShop>().HasKey(w => w.Id);
+        modelBuilder.Entity<WorkShop>().Property(w => w.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<WorkShop>().Property(w => w.Address).IsRequired();
+        modelBuilder.Entity<WorkShop>().Property(w => w.Name).IsRequired();
+        modelBuilder.Entity<WorkShop>().Property(w => w.Phone).IsRequired();
+
+        modelBuilder.Entity<WorkShopCylinder>().HasKey(wc => wc.Id);
+        modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.Model).IsRequired();
+        modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.Volume).IsRequired();
+        modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.MadeDate).IsRequired();
+        modelBuilder.Entity<WorkShopCylinder>().Property(wc => wc.SerialNumber).IsRequired();
+
+        modelBuilder.Entity<ProviderCompany>().HasKey(pc => pc.Id);
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Address).IsRequired();
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Name).IsRequired();
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Ruc).IsRequired();
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.Phone).IsRequired();
+        modelBuilder.Entity<ProviderCompany>().Property(pc => pc.ContactPerson).IsRequired();
+
+        modelBuilder.Entity<CylinderProvider>().HasKey(cp => cp.Id);
+        modelBuilder.Entity<CylinderProvider>().Property(cp => cp.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<CylinderProvider>().Property(cp => cp.SerieNumber).IsRequired();
+        modelBuilder.Entity<CylinderProvider>().Property(cp => cp.Volume).IsRequired();
+        modelBuilder.Entity<CylinderProvider>().Property(cp => cp.EmitDate).IsRequired();
+        modelBuilder.Entity<CylinderProvider>().Property(cp => cp.Brand).IsRequired();
+        
+        
+
+        modelBuilder.Entity<User>().HasMany<Cylinder>().WithOne().HasForeignKey(cy => cy.ClientId);
         modelBuilder.Entity<Cylinder>().HasOne<Valve>().WithOne().HasForeignKey<Valve>(v => v.CylinderId);
         modelBuilder.Entity<Owner>().HasMany<Vehicle>().WithOne().HasForeignKey(v => v.OwnerId);
-        modelBuilder.Entity<Client>().HasMany<OperationCenter>().WithOne().HasForeignKey(o => o.ClientId);
+        modelBuilder.Entity<User>().HasMany<OperationCenter>().WithOne().HasForeignKey(o => o.ClientId);
         modelBuilder.Entity<OperationCenter>().HasOne<Certifier>().WithOne()
             .HasForeignKey<Certifier>(v => v.OperationCenterId);
-        modelBuilder.Entity<Client>().HasMany<Observation>().WithOne().HasForeignKey(o => o.ClientId);
+        modelBuilder.Entity<User>().HasMany<Observation>().WithOne().HasForeignKey(o => o.ClientId);
+        
+        
+        modelBuilder.Entity<User>().HasMany<WorkShopCompany>().WithOne().HasForeignKey(wc => wc.UserId);
+        modelBuilder.Entity<WorkShopCompany>().HasMany<WorkShop>().WithOne().HasForeignKey(w => w.WorkShopCompanyId);
+        modelBuilder.Entity<WorkShop>().HasMany<WorkShopCylinder>().WithOne().HasForeignKey(wc => wc.WorkShopId);
+        modelBuilder.Entity<User>().HasMany<ProviderCompany>().WithOne().HasForeignKey(pc => pc.UserId);
+        modelBuilder.Entity<ProviderCompany>().HasMany<CylinderProvider>().WithOne().HasForeignKey(cp => cp.ProviderCompanyId);
         
         
         

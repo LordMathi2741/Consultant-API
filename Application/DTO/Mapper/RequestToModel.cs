@@ -1,7 +1,7 @@
 using Application.DTO.Request;
 using AutoMapper;
+using Support.Factory.Cylinder;
 using Support.Models;
-using Client = Support.Models.Client;
 
 namespace Application.DTO.Mapper;
 
@@ -9,7 +9,7 @@ public class RequestToModel : Profile
 {
     public RequestToModel()
     {
-        CreateMap<ClientRequest, Client>();
+        CreateMap<ClientRequest, User>();
         CreateMap<CertifierRequest, Certifier>();
         CreateMap<CylinderRequest, Cylinder>();
         CreateMap<ObservationRequest, Observation>();

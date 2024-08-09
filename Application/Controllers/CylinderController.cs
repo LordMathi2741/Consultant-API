@@ -5,9 +5,12 @@ using Application.Filters;
 using AutoMapper;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Support.Factory.Cylinder;
 using Support.Models;
 
 namespace Application.Controllers;
+
+
 
 [Route("/api/v1/[controller]")]
 [ApiController]
@@ -18,14 +21,19 @@ namespace Application.Controllers;
 [ProducesResponseType(403)]
 public class CylinderController(ICylinderRepository cylinderRepository, IMapper mapper) : ControllerBase
 {
+    
+    
     [HttpPost]
     [ProducesResponseType(201)]
     [CustomAuthorize("Admin", "Tester", "Default")]
+    
     public async Task<IActionResult> CreateCylinder([FromBody] CylinderRequest cylinderRequest)
     {
-        var cylinder = mapper.Map<CylinderRequest, Cylinder>(cylinderRequest);
-        await cylinderRepository.AddCylinderAsync(cylinder);
-        var cylinderResponse = mapper.Map<Cylinder, CylinderResponse >(cylinder);
+        var factory = new CylinderOperationCenterFactory();
+        var cylinder = factory.CreateCylinder();
+        mapper.Map(cylinderRequest, cylinder);
+        await cylinderRepository.AddCylinderAsync((Cylinder)cylinder);
+        var cylinderResponse = mapper.Map<Cylinder, CylinderResponse >((Cylinder)cylinder);
         return StatusCode(201, cylinderResponse);
     }
     

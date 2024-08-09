@@ -1,7 +1,7 @@
 using Application.DTO.Response;
 using AutoMapper;
+using Support.Factory.Cylinder;
 using Support.Models;
-using Client = Support.Models.Client;
 
 namespace Application.DTO.Mapper;
 
@@ -9,7 +9,7 @@ public class ModelToResponse : Profile
 {
     public ModelToResponse()
     {
-        CreateMap<Client, ClientResponse>();
+        CreateMap<User, ClientResponse>();
         CreateMap<Certifier, CertifierResponse>();
         CreateMap<Cylinder,CylinderResponse>();
         CreateMap<Observation, ObservationResponse>();

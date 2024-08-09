@@ -1,6 +1,6 @@
 namespace Support.Models;
 
-public partial class Client
+public partial class User
 {
     public long Id { get; }
     public int Dni { get;  set; }
@@ -18,9 +18,9 @@ public partial class Client
     
 }
 
-public partial class Client
+public partial class User
 {
-    public Client()
+    public User()
     {
         Firstname = string.Empty;
         Lastname = string.Empty;
@@ -33,7 +33,7 @@ public partial class Client
         Company = string.Empty;
     }
     
-    public Client(string firstName, string lastName, int dni, string email, string phone, string address, string password, string username, string company)
+    public User(string firstName, string lastName, int dni, string email, string phone, string address, string password, string username, string company)
     {
         Firstname = firstName;
         Lastname = lastName;

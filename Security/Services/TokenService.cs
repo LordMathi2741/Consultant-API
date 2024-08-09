@@ -4,23 +4,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Security.Interfaces;
-using Client = Support.Models.Client;
+using Support.Models;
 
 namespace Security.Services;
 
 public class TokenService(IConfiguration configuration) : ITokenService
 {
-    public string GenerateToken(Client client)
+    public string GenerateToken(User user)
     {
         var key = Encoding.ASCII.GetBytes(configuration["AppSettings:Secret"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Sid, client.Id.ToString()),
-                new Claim(ClaimTypes.Name, client.Username),
-                new Claim(ClaimTypes.Email, client.Email),
-                new Claim(ClaimTypes.Role, client.Role)
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
                 
             }),
             Expires = DateTime.UtcNow.AddHours(1),

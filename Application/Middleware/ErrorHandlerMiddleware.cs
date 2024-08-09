@@ -28,11 +28,11 @@ public class ErrorHandlerMiddleware
     {
         var code = HttpStatusCode.InternalServerError;
         var result = JsonConvert.SerializeObject(new { error = exception.Message });
-        if (exception is ClientWithThisEmailOrPasswordAlreadyExistsException or UsernameAlreadyExistsException or VehicleWithMaxCylindersException)
+        if (exception is ClientWithThisEmailOrPasswordAlreadyExistsException or UsernameAlreadyExistsException or VehicleWithMaxCylindersException or MaxCylinderProvidersException or MaxWorkShopCylindersException or WorkShopCannotRegisterIFiveYearsException)
         {
             code = HttpStatusCode.Conflict;
         }
-        else if (exception is  InvalidDniException or InvalidPhoneNumberException or InvalidEmailOrPasswordException  )
+        else if (exception is  InvalidDniException or InvalidPhoneNumberException or InvalidEmailOrPasswordException or FutureDateException or InvalidCapacityException or InvalidClientRoleException or InvalidVolumeException or InvalidRucException )
         {
             code = HttpStatusCode.BadRequest;
         }

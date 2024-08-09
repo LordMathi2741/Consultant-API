@@ -6,7 +6,7 @@ using Application.Filters;
 using AutoMapper;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Client = Support.Models.Client;
+using Support.Models;
 
 namespace Application.Controllers
 {
@@ -17,16 +17,16 @@ namespace Application.Controllers
     [ProducesResponseType(500)]
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
-    public class ClientController(IClientRepository clientRepository, IMapper mapper) : ControllerBase
+    public class UserController(IUserRepository userRepository, IMapper mapper) : ControllerBase
     {
         [HttpPost("sign-up")]
         [AllowAnonymous]
         [ProducesResponseType(201)]
         public async Task<IActionResult> SignUp([FromBody] ClientRequest clientRequest)
         {
-           var client = mapper.Map<ClientRequest, Client>(clientRequest);
-           await clientRepository.SignUp(client);
-           var clientResponse = mapper.Map<Client, ClientResponse >(client);
+           var client = mapper.Map<ClientRequest, User>(clientRequest);
+           await userRepository.SignUp(client);
+           var clientResponse = mapper.Map<User, ClientResponse >(client);
            return StatusCode(201, clientResponse);
         }
         
@@ -36,7 +36,7 @@ namespace Application.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> SignIn( string email,  string password)
         {
-            var token = await clientRepository.SignIn(email, password);
+            var token = await userRepository.SignIn(email, password);
             Response.Cookies.Append("Token", token , 
                 new CookieOptions
                 {
@@ -53,8 +53,8 @@ namespace Application.Controllers
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> GetClients()
         {
-            var clients = await clientRepository.GetAllAsync();
-            var clientsResponse = mapper.Map<IEnumerable<Client>, IEnumerable<ClientResponse>>(clients);
+            var clients = await userRepository.GetAllAsync();
+            var clientsResponse = mapper.Map<IEnumerable<User>, IEnumerable<ClientResponse>>(clients);
             return Ok(clientsResponse);
 
         }
@@ -65,10 +65,10 @@ namespace Application.Controllers
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> GetClientById( long id)
         {
-            var client = await clientRepository.GetByIdAsync(id);
+            var client = await userRepository.GetByIdAsync(id);
             if (client == null)
                 return NotFound();
-            var clientResponse = mapper.Map<Client, ClientResponse>(client);
+            var clientResponse = mapper.Map<User, ClientResponse>(client);
             return Ok(clientResponse);
         }
         
@@ -78,11 +78,11 @@ namespace Application.Controllers
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> UpdateClient( long id, [FromBody] ClientRequest clientRequest)
         {
-            var client = await clientRepository.GetByIdAsync(id);
+            var client = await userRepository.GetByIdAsync(id);
             if (client == null) return NotFound();
             mapper.Map(clientRequest, client);
-            await clientRepository.UpdateClient(client);
-            var clientResponse = mapper.Map<Client, ClientResponse>(client);
+            await userRepository.UpdateClient(client);
+            var clientResponse = mapper.Map<User, ClientResponse>(client);
             return Ok(clientResponse);
         }
         
@@ -92,10 +92,10 @@ namespace Application.Controllers
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> UpdateClientRole(long id, [FromRoute] string role)
         {
-            var client = await clientRepository.GetByIdAsync(id);
+            var client = await userRepository.GetByIdAsync(id);
             if (client == null) return NotFound();
-            await clientRepository.UpdateClientRole(client, role);
-            var clientResponse = mapper.Map<Client, ClientResponse>(client);
+            await userRepository.UpdateClientRole(client, role);
+            var clientResponse = mapper.Map<User, ClientResponse>(client);
             return Ok(clientResponse);
         }
 
@@ -105,10 +105,10 @@ namespace Application.Controllers
         [CustomAuthorize("Tester" , "Admin")]
         public async Task<IActionResult> DeleteClient([FromRoute] long id)
         {
-            var client = await clientRepository.GetByIdAsync(id);
+            var client = await userRepository.GetByIdAsync(id);
             if (client == null) return NotFound();
-            await clientRepository.DeleteClient(client);
-            return StatusCode(200, "Client deleted successfully");
+            await userRepository.DeleteClient(client);
+            return StatusCode(200, "User deleted successfully");
         }
     }
 }

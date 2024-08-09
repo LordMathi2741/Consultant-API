@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Security.Interfaces;
 using Security.Services;
+using Support.Factory.Cylinder;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add CORS Policy
@@ -80,7 +81,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVehicleRepository,VehicleRepository>();
 builder.Services.AddScoped<ICylinderRepository,CylinderRepository>();
 builder.Services.AddScoped<IObservationRepository, ObservationRepository>();
@@ -88,6 +89,13 @@ builder.Services.AddScoped<ICertifierRepository, CertifierRepository>();
 builder.Services.AddScoped<IOperationCenterRepository,OperationCenterRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 builder.Services.AddScoped<IValveRepository, ValveRepository>();
+builder.Services.AddScoped<IWorkShopRepository, WorkShopRepository>();
+builder.Services.AddScoped<IWorkShopCompanyRepository,WorkShopCompanyRepository>();
+builder.Services.AddScoped<IWorkShopCylinderRepository, WorkShopCylinderRepository>();
+builder.Services.AddScoped<IProviderCompanyRepository, ProviderCompanyRepository>();
+builder.Services.AddScoped<IInstallerCompanyRepository, InstallerCompanyRepository>();
+builder.Services.AddScoped<ICylinderProviderRepository, CylinderProviderRepository>();
+    
 
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();

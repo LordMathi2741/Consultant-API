@@ -1,6 +1,6 @@
-namespace Support.Models;
+namespace Support.Factory.Cylinder;
 
-public partial class Cylinder
+public partial class Cylinder : ICylinder
 {
     public long Id { get; }
     public string Brand { get; set; }
