@@ -46,7 +46,12 @@ public class UserRepository(AppDbContext context, IUnitOfWork unitOfWork, IToken
         var token = tokenService.GenerateToken(client);
         return token;
     }
-    
+
+    public async Task<User?> GetClientByEmail(string email)
+    {
+        return await context.Set<User>().FirstOrDefaultAsync(c => c.Email == email);
+    }
+
 
     public async Task<User?> UpdateClient(User user)
     {

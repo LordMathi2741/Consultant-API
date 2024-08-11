@@ -73,6 +73,18 @@ namespace Application.Controllers
             return Ok(clientResponse);
         }
         
+        [HttpGet("email/{email}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [CustomAuthorize("Tester" , "Admin", "Default")]
+        public async Task<IActionResult> GetClientByEmail( string email)
+        {
+            var client = await userRepository.GetClientByEmail(email);
+            if (client == null) return NotFound();
+            var clientResponse = mapper.Map<User, ClientResponse>(client);
+            return Ok(clientResponse);
+        }
+        
         [HttpPut("{id:long}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]

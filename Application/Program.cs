@@ -13,16 +13,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Security.Interfaces;
 using Security.Services;
-using Support.Factory.Cylinder;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllPolicy",
-        policy => policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOriginsPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
 });
 
 var configuration = new ConfigurationBuilder()
@@ -123,13 +126,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
-app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials());
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseMiddleware<AuthenticacionMiddleware>();
 
 
-app.UseCors("AllowAllPolicy");
+app.UseCors("AllowSpecificOriginsPolicy");
 
 app.MapControllers();
 app.UseAuthentication();
