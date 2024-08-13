@@ -16,19 +16,28 @@ namespace Application.Controllers;
 [ProducesResponseType(500)]
 [ProducesResponseType(401)]
 [ProducesResponseType(403)]
-public class ProviderCompanyController(IProviderCompanyRepository providerCompanyRepository, IMapper mapper) : ControllerBase
+public class ProviderCompanyController : ControllerBase
 {
+    private readonly IProviderCompanyRepository _providerCompanyRepository;
+    private readonly IMapper _mapper;
+    private readonly CompanyFactory _factory;
+    public ProviderCompanyController(IProviderCompanyRepository providerCompanyRepository, IMapper mapper, ProviderCompanyFactory providerCompanyFactory)
+    {
+        _providerCompanyRepository = providerCompanyRepository;
+        _mapper = mapper;
+        _factory = providerCompanyFactory;
+    }
+    
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateProviderCompany([FromBody] ProviderCompanyRequest providerCompanyRequest)
     {
-        var factory = new ProviderCompanyFactory();
-        var providerCompany = factory.CreateCompany();
-        mapper.Map(providerCompanyRequest, providerCompany);
-        await providerCompanyRepository.AddProviderCompanyAsync((ProviderCompany)providerCompany);
-        var providerCompanyResponse = mapper.Map<ProviderCompany, ProviderCompanyResponse>((ProviderCompany)providerCompany);
+        var providerCompany = _factory.CreateCompany();
+        _mapper.Map(providerCompanyRequest, providerCompany);
+        await _providerCompanyRepository.AddProviderCompanyAsync((ProviderCompany)providerCompany);
+        var providerCompanyResponse = _mapper.Map<ProviderCompany, ProviderCompanyResponse>((ProviderCompany)providerCompany);
         return StatusCode(201, providerCompanyResponse);
     }
     
@@ -37,8 +46,8 @@ public class ProviderCompanyController(IProviderCompanyRepository providerCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetProviderCompanies()
     {
-        var providerCompanies = await providerCompanyRepository.GetAllAsync();
-        var providerCompaniesResponse = mapper.Map<IEnumerable<ProviderCompany>, IEnumerable<ProviderCompanyResponse>>(providerCompanies);
+        var providerCompanies = await _providerCompanyRepository.GetAllAsync();
+        var providerCompaniesResponse = _mapper.Map<IEnumerable<ProviderCompany>, IEnumerable<ProviderCompanyResponse>>(providerCompanies);
         return Ok(providerCompaniesResponse);
     }
     
@@ -48,9 +57,9 @@ public class ProviderCompanyController(IProviderCompanyRepository providerCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetProviderCompanyById(long id)
     {
-        var providerCompany = await providerCompanyRepository.GetByIdAsync(id);
+        var providerCompany = await _providerCompanyRepository.GetByIdAsync(id);
         if (providerCompany == null) return NotFound();
-        var providerCompanyResponse = mapper.Map<ProviderCompany, ProviderCompanyResponse>(providerCompany);
+        var providerCompanyResponse = _mapper.Map<ProviderCompany, ProviderCompanyResponse>(providerCompany);
         return Ok(providerCompanyResponse);
     }
     
@@ -61,11 +70,11 @@ public class ProviderCompanyController(IProviderCompanyRepository providerCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateProviderCompany(long id, [FromBody] ProviderCompanyRequest providerCompanyRequest)
     {
-        var providerCompany = await providerCompanyRepository.GetByIdAsync(id);
+        var providerCompany = await _providerCompanyRepository.GetByIdAsync(id);
         if (providerCompany == null) return NotFound();
-        mapper.Map<ProviderCompanyRequest, ProviderCompany>(providerCompanyRequest);
-        await providerCompanyRepository.UpdateProviderCompanyAsync(providerCompany);
-        var providerCompanyResponse = mapper.Map<ProviderCompany, ProviderCompanyResponse>(providerCompany);
+        _mapper.Map<ProviderCompanyRequest, ProviderCompany>(providerCompanyRequest);
+        await _providerCompanyRepository.UpdateProviderCompanyAsync(providerCompany);
+        var providerCompanyResponse = _mapper.Map<ProviderCompany, ProviderCompanyResponse>(providerCompany);
         return Ok(providerCompanyResponse);
     }
     
@@ -75,9 +84,9 @@ public class ProviderCompanyController(IProviderCompanyRepository providerCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> DeleteProviderCompany(long id)
     {
-        var providerCompany = await providerCompanyRepository.GetByIdAsync(id);
+        var providerCompany = await _providerCompanyRepository.GetByIdAsync(id);
         if (providerCompany == null) return NotFound();
-        await providerCompanyRepository.DeleteProviderCompanyAsync(providerCompany);
+        await _providerCompanyRepository.DeleteProviderCompanyAsync(providerCompany);
         return Ok("Provider Company deleted successfully");
     }
 }

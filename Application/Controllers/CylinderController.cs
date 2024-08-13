@@ -19,9 +19,18 @@ namespace Application.Controllers;
 [ProducesResponseType(500)]
 [ProducesResponseType(401)]
 [ProducesResponseType(403)]
-public class CylinderController(ICylinderRepository cylinderRepository, IMapper mapper) : ControllerBase
+public class CylinderController : ControllerBase
 {
+    private readonly ICylinderRepository _cylinderRepository;
+    private readonly IMapper _mapper;
+    private readonly CylinderFactory _factory;
     
+    public CylinderController(ICylinderRepository cylinderRepository, IMapper mapper, CylinderOperationCenterFactory cylinderOperationCenterFactory)
+    {
+        _cylinderRepository = cylinderRepository;
+        _mapper = mapper;
+        _factory = cylinderOperationCenterFactory;
+    }
     
     [HttpPost]
     [ProducesResponseType(201)]
@@ -30,11 +39,10 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     
     public async Task<IActionResult> CreateCylinder([FromBody] CylinderRequest cylinderRequest)
     {
-        var factory = new CylinderOperationCenterFactory();
-        var cylinder = factory.CreateCylinder();
-        mapper.Map(cylinderRequest, cylinder);
-        await cylinderRepository.AddCylinderAsync((Cylinder)cylinder);
-        var cylinderResponse = mapper.Map<Cylinder, CylinderResponse >((Cylinder)cylinder);
+        var cylinder = _factory.CreateCylinder();
+        _mapper.Map(cylinderRequest, cylinder);
+        await _cylinderRepository.AddCylinderAsync((Cylinder)cylinder);
+        var cylinderResponse = _mapper.Map<Cylinder, CylinderResponse >((Cylinder)cylinder);
         return StatusCode(201, cylinderResponse);
     }
     
@@ -43,8 +51,8 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetCylinders()
     {
-        var cylinders = await cylinderRepository.GetAllAsync();
-        var cylindersResponse = mapper.Map<IEnumerable<Cylinder>, IEnumerable<CylinderResponse>>(cylinders);
+        var cylinders = await _cylinderRepository.GetAllAsync();
+        var cylindersResponse = _mapper.Map<IEnumerable<Cylinder>, IEnumerable<CylinderResponse>>(cylinders);
         return Ok(cylindersResponse);
     }
     
@@ -54,9 +62,9 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetCylinderById(long id)
     {
-        var cylinder = await cylinderRepository.GetByIdAsync(id);
+        var cylinder = await _cylinderRepository.GetByIdAsync(id);
         if (cylinder == null) return NotFound();
-        var cylinderResponse = mapper.Map<Cylinder, CylinderResponse>(cylinder);
+        var cylinderResponse = _mapper.Map<Cylinder, CylinderResponse>(cylinder);
         return Ok(cylinderResponse);
     }
     
@@ -67,11 +75,11 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateCylinder(long id, [FromBody] CylinderRequest cylinderRequest)
     {
-        var cylinder = await cylinderRepository.GetByIdAsync(id);
+        var cylinder = await _cylinderRepository.GetByIdAsync(id);
         if (cylinder == null) return NotFound();
-        mapper.Map(cylinderRequest, cylinder);
-        await cylinderRepository.UpdateCylinderAsync(cylinder);
-        var cylinderResponse = mapper.Map<Cylinder, CylinderResponse>(cylinder);
+        _mapper.Map(cylinderRequest, cylinder);
+        await _cylinderRepository.UpdateCylinderAsync(cylinder);
+        var cylinderResponse = _mapper.Map<Cylinder, CylinderResponse>(cylinder);
         return Ok(cylinderResponse);
     }
     
@@ -81,9 +89,9 @@ public class CylinderController(ICylinderRepository cylinderRepository, IMapper 
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> DeleteCylinder(long id)
     {
-        var cylinder = await cylinderRepository.GetByIdAsync(id);
+        var cylinder = await _cylinderRepository.GetByIdAsync(id);
         if (cylinder == null) return NotFound();
-        await cylinderRepository.DeleteCylinderAsync(cylinder);
+        await _cylinderRepository.DeleteCylinderAsync(cylinder);
         return Ok("Cylinder deleted successfully.");
     }
 }

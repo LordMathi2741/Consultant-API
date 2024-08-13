@@ -16,19 +16,29 @@ namespace Application.Controllers;
 [ProducesResponseType(500)]
 [ProducesResponseType(401)]
 [ProducesResponseType(403)]
-public class InstallerCompanyController(IInstallerCompanyRepository installerCompanyRepository, IMapper mapper) : ControllerBase
+public class InstallerCompanyController : ControllerBase
 {
+    private readonly IInstallerCompanyRepository _installerCompanyRepository;
+    private readonly IMapper _mapper;
+    private readonly CompanyFactory _factory;
+    
+    public InstallerCompanyController(IInstallerCompanyRepository installerCompanyRepository, IMapper mapper, InstallerCompanyFactory installerCompanyFactory)
+    {
+        _installerCompanyRepository = installerCompanyRepository;
+        _mapper = mapper;
+        _factory = installerCompanyFactory;
+    }
+    
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateInstallerCompany([FromBody] InstallerCompanyRequest installerCompanyRequest)
     {
-        var factory = new InstallerCompanyFactory();
-        var installerCompany = factory.CreateCompany();
-        mapper.Map(installerCompanyRequest, installerCompany);
-        await installerCompanyRepository.AddInstallerCompanyAsync((InstallerCompany)installerCompany);
-        var installerCompanyResponse = mapper.Map<InstallerCompany, InstallerCompanyResponse>((InstallerCompany)installerCompany);
+        var installerCompany = _factory.CreateCompany();
+        _mapper.Map(installerCompanyRequest, installerCompany);
+        await _installerCompanyRepository.AddInstallerCompanyAsync((InstallerCompany)installerCompany);
+        var installerCompanyResponse = _mapper.Map<InstallerCompany, InstallerCompanyResponse>((InstallerCompany)installerCompany);
         return StatusCode(201, installerCompanyResponse);
     }
     
@@ -37,8 +47,8 @@ public class InstallerCompanyController(IInstallerCompanyRepository installerCom
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetInstallerCompanies()
     {
-        var installerCompanies = await installerCompanyRepository.GetAllAsync();
-        var installerCompaniesResponse = mapper.Map<IEnumerable<InstallerCompany>, IEnumerable<InstallerCompanyResponse>>(installerCompanies);
+        var installerCompanies = await _installerCompanyRepository.GetAllAsync();
+        var installerCompaniesResponse = _mapper.Map<IEnumerable<InstallerCompany>, IEnumerable<InstallerCompanyResponse>>(installerCompanies);
         return Ok(installerCompaniesResponse);
     }
     
@@ -48,9 +58,9 @@ public class InstallerCompanyController(IInstallerCompanyRepository installerCom
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetInstallerCompanyById(long id)
     {
-        var installerCompany = await installerCompanyRepository.GetByIdAsync(id);
+        var installerCompany = await _installerCompanyRepository.GetByIdAsync(id);
         if (installerCompany == null) return NotFound();
-        var installerCompanyResponse = mapper.Map<InstallerCompany, InstallerCompanyResponse>(installerCompany);
+        var installerCompanyResponse = _mapper.Map<InstallerCompany, InstallerCompanyResponse>(installerCompany);
         return Ok(installerCompanyResponse);
     }
     
@@ -61,11 +71,11 @@ public class InstallerCompanyController(IInstallerCompanyRepository installerCom
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateInstallerCompany(long id, [FromBody] InstallerCompanyRequest installerCompanyRequest)
     {
-        var installerCompany = await installerCompanyRepository.GetByIdAsync(id);
+        var installerCompany = await _installerCompanyRepository.GetByIdAsync(id);
         if (installerCompany == null) return NotFound();
-        mapper.Map<InstallerCompanyRequest, InstallerCompany>(installerCompanyRequest);
-        await installerCompanyRepository.UpdateInstallerCompanyAsync(installerCompany);
-        var installerCompanyResponse = mapper.Map<InstallerCompany, InstallerCompanyResponse>(installerCompany);
+        _mapper.Map<InstallerCompanyRequest, InstallerCompany>(installerCompanyRequest);
+        await _installerCompanyRepository.UpdateInstallerCompanyAsync(installerCompany);
+        var installerCompanyResponse = _mapper.Map<InstallerCompany, InstallerCompanyResponse>(installerCompany);
         return Ok(installerCompanyResponse);
     }
     
@@ -75,9 +85,9 @@ public class InstallerCompanyController(IInstallerCompanyRepository installerCom
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> DeleteInstallerCompany(long id)
     {
-        var installerCompany = await installerCompanyRepository.GetByIdAsync(id);
+        var installerCompany = await _installerCompanyRepository.GetByIdAsync(id);
         if (installerCompany == null) return NotFound();
-        await installerCompanyRepository.DeleteInstallerCompanyAsync(installerCompany);
+        await _installerCompanyRepository.DeleteInstallerCompanyAsync(installerCompany);
         return Ok("Installer Company deleted successfully");
     }
 }

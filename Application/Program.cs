@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Security.Interfaces;
 using Security.Services;
+using Support.Factory.Company;
+using Support.Factory.Cylinder;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add CORS Policy
@@ -34,6 +36,14 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 builder.Services.AddSingleton(configuration);
+builder.Services.AddTransient((_) => new CylinderOperationCenterFactory());
+builder.Services.AddTransient((_) => new CylinderProviderFactory());
+builder.Services.AddTransient((_) => new WorkShopCylinderFactory());
+
+builder.Services.AddTransient((_) => new WorkShopCompanyFactory());
+builder.Services.AddTransient((_) => new ProviderCompanyFactory());
+builder.Services.AddTransient((_) => new InstallerCompanyFactory());
+
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

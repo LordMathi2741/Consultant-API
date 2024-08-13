@@ -16,19 +16,27 @@ namespace Application.Controllers;
 [ProducesResponseType(500)]
 [ProducesResponseType(401)]
 [ProducesResponseType(403)]
-public class WorkShopCylinderController(IWorkShopCylinderRepository workShopCylinderRepository,IMapper mapper) : ControllerBase
+public class WorkShopCylinderController : ControllerBase
 {
+    private readonly IWorkShopCylinderRepository _workShopCylinderRepository;
+    private readonly IMapper _mapper;
+    private readonly CylinderFactory _factory;
+    public WorkShopCylinderController(IWorkShopCylinderRepository workShopCylinderRepository, IMapper mapper, WorkShopCylinderFactory workShopCylinderFactory)
+    {
+        _workShopCylinderRepository = workShopCylinderRepository;
+        _mapper = mapper;
+        _factory = workShopCylinderFactory;
+    }
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateWorkShopCylinder([FromBody] WorkShopCylinderRequest workShopCylinderRequest)
     {
-        var factory = new WorkShopCylinderFactory();
-        var workShopCylinder = factory.CreateCylinder();
-        mapper.Map(workShopCylinderRequest, workShopCylinder);
-        await workShopCylinderRepository.AddWorkShopCylinderAsync((WorkShopCylinder)workShopCylinder);
-        var workShopCylinderResponse = mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>((WorkShopCylinder)workShopCylinder);
+        var workShopCylinder = _factory.CreateCylinder();
+        _mapper.Map(workShopCylinderRequest, workShopCylinder);
+        await _workShopCylinderRepository.AddWorkShopCylinderAsync((WorkShopCylinder)workShopCylinder);
+        var workShopCylinderResponse = _mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>((WorkShopCylinder)workShopCylinder);
         return StatusCode(201, workShopCylinderResponse);
     }
     
@@ -37,8 +45,8 @@ public class WorkShopCylinderController(IWorkShopCylinderRepository workShopCyli
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetWorkShopCylinders()
     {
-        var workShopCylinders = await workShopCylinderRepository.GetAllAsync();
-        var workShopCylindersResponse = mapper.Map<IEnumerable<WorkShopCylinder>, IEnumerable<WorkShopCylinderResponse>>(workShopCylinders);
+        var workShopCylinders = await _workShopCylinderRepository.GetAllAsync();
+        var workShopCylindersResponse = _mapper.Map<IEnumerable<WorkShopCylinder>, IEnumerable<WorkShopCylinderResponse>>(workShopCylinders);
         return Ok(workShopCylindersResponse);
     }
     
@@ -48,9 +56,9 @@ public class WorkShopCylinderController(IWorkShopCylinderRepository workShopCyli
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetWorkShopCylinderById(long id)
     {
-        var workShopCylinder = await workShopCylinderRepository.GetByIdAsync(id);
+        var workShopCylinder = await _workShopCylinderRepository.GetByIdAsync(id);
         if (workShopCylinder == null) return NotFound();
-        var workShopCylinderResponse = mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>(workShopCylinder);
+        var workShopCylinderResponse = _mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>(workShopCylinder);
         return Ok(workShopCylinderResponse);
     }
     
@@ -61,11 +69,11 @@ public class WorkShopCylinderController(IWorkShopCylinderRepository workShopCyli
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateWorkShopCylinder(long id, [FromBody] WorkShopCylinderRequest workShopCylinderRequest)
     {
-        var workShopCylinder = await workShopCylinderRepository.GetByIdAsync(id);
+        var workShopCylinder = await _workShopCylinderRepository.GetByIdAsync(id);
         if (workShopCylinder == null) return NotFound();
-        mapper.Map<WorkShopCylinderRequest, WorkShopCylinder>(workShopCylinderRequest);
-        await workShopCylinderRepository.UpdateWorkShopCylinderAsync(workShopCylinder);
-        var workShopCylinderResponse = mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>(workShopCylinder);
+        _mapper.Map<WorkShopCylinderRequest, WorkShopCylinder>(workShopCylinderRequest);
+        await _workShopCylinderRepository.UpdateWorkShopCylinderAsync(workShopCylinder);
+        var workShopCylinderResponse = _mapper.Map<WorkShopCylinder, WorkShopCylinderResponse>(workShopCylinder);
         return Ok(workShopCylinderResponse);
     }
     
@@ -75,9 +83,9 @@ public class WorkShopCylinderController(IWorkShopCylinderRepository workShopCyli
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> DeleteWorkShopCylinder(long id)
     {
-        var workShopCylinder = await workShopCylinderRepository.GetByIdAsync(id);
+        var workShopCylinder = await _workShopCylinderRepository.GetByIdAsync(id);
         if (workShopCylinder == null) return NotFound();
-        await workShopCylinderRepository.DeleteWorkShopCylinderAsync(workShopCylinder);
+        await _workShopCylinderRepository.DeleteWorkShopCylinderAsync(workShopCylinder);
         return Ok("WorkShopCylinder deleted successfully");
     }
 }

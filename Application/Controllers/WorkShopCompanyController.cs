@@ -16,19 +16,27 @@ namespace Application.Controllers;
 [ProducesResponseType(500)]
 [ProducesResponseType(401)]
 [ProducesResponseType(403)]
-public class WorkShopCompanyController(IWorkShopCompanyRepository workShopCompanyRepository, IMapper mapper) : ControllerBase
+public class WorkShopCompanyController : ControllerBase
 {
+    private readonly IWorkShopCompanyRepository _workShopCompanyRepository;
+    private readonly IMapper _mapper;
+    private readonly CompanyFactory _factory;
+    public WorkShopCompanyController(IWorkShopCompanyRepository workShopCompanyRepository, IMapper mapper, WorkShopCompanyFactory workShopCompanyFactory)
+    {
+        _workShopCompanyRepository = workShopCompanyRepository;
+        _mapper = mapper;
+        _factory = workShopCompanyFactory;
+    }
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(409)]
     [CustomAuthorize("Admin", "Tester", "Default")]
     public async Task<IActionResult> CreateWorkShopCompany([FromBody] WorkShopCompanyRequest workShopCompanyRequest)
     {
-        var factory = new WorkShopCompanyFactory();
-        var workShopCompany = factory.CreateCompany();
-        mapper.Map(workShopCompanyRequest, workShopCompany);
-        await workShopCompanyRepository.AddWorkShopCompanyAsync((WorkShopCompany)workShopCompany);
-        var workShopCompanyResponse = mapper.Map<WorkShopCompany, WorkShopCompanyResponse>((WorkShopCompany)workShopCompany);
+        var workShopCompany = _factory.CreateCompany();
+        _mapper.Map(workShopCompanyRequest, workShopCompany);
+        await _workShopCompanyRepository.AddWorkShopCompanyAsync((WorkShopCompany)workShopCompany);
+        var workShopCompanyResponse = _mapper.Map<WorkShopCompany, WorkShopCompanyResponse>((WorkShopCompany)workShopCompany);
         return StatusCode(201, workShopCompanyResponse);
     }
     
@@ -37,8 +45,8 @@ public class WorkShopCompanyController(IWorkShopCompanyRepository workShopCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetWorkShopCompanies()
     {
-        var workShopCompanies = await workShopCompanyRepository.GetAllAsync();
-        var workShopCompaniesResponse = mapper.Map<IEnumerable<WorkShopCompany>, IEnumerable<WorkShopCompanyResponse>>(workShopCompanies);
+        var workShopCompanies = await _workShopCompanyRepository.GetAllAsync();
+        var workShopCompaniesResponse = _mapper.Map<IEnumerable<WorkShopCompany>, IEnumerable<WorkShopCompanyResponse>>(workShopCompanies);
         return Ok(workShopCompaniesResponse);
     }
     
@@ -48,9 +56,9 @@ public class WorkShopCompanyController(IWorkShopCompanyRepository workShopCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> GetWorkShopCompanyById(long id)
     {
-        var workShopCompany = await workShopCompanyRepository.GetByIdAsync(id);
+        var workShopCompany = await _workShopCompanyRepository.GetByIdAsync(id);
         if (workShopCompany == null) return NotFound();
-        var workShopCompanyResponse = mapper.Map<WorkShopCompany, WorkShopCompanyResponse>(workShopCompany);
+        var workShopCompanyResponse = _mapper.Map<WorkShopCompany, WorkShopCompanyResponse>(workShopCompany);
         return Ok(workShopCompanyResponse);
     }
     
@@ -61,11 +69,11 @@ public class WorkShopCompanyController(IWorkShopCompanyRepository workShopCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> UpdateWorkShopCompany(long id, [FromBody] WorkShopCompanyRequest workShopCompanyRequest)
     {
-        var workShopCompany = await workShopCompanyRepository.GetByIdAsync(id);
+        var workShopCompany = await _workShopCompanyRepository.GetByIdAsync(id);
         if (workShopCompany == null) return NotFound();
-        mapper.Map<WorkShopCompanyRequest, WorkShopCompany>(workShopCompanyRequest);
-        await workShopCompanyRepository.UpdateWorkShopCompanyAsync(workShopCompany);
-        var workShopCompanyResponse = mapper.Map<WorkShopCompany, WorkShopCompanyResponse>(workShopCompany);
+        _mapper.Map<WorkShopCompanyRequest, WorkShopCompany>(workShopCompanyRequest);
+        await _workShopCompanyRepository.UpdateWorkShopCompanyAsync(workShopCompany);
+        var workShopCompanyResponse = _mapper.Map<WorkShopCompany, WorkShopCompanyResponse>(workShopCompany);
         return Ok(workShopCompanyResponse);
     }
     
@@ -75,9 +83,9 @@ public class WorkShopCompanyController(IWorkShopCompanyRepository workShopCompan
     [CustomAuthorize("Admin", "Tester")]
     public async Task<IActionResult> DeleteWorkShopCompany(long id)
     {
-        var workShopCompany = await workShopCompanyRepository.GetByIdAsync(id);
+        var workShopCompany = await _workShopCompanyRepository.GetByIdAsync(id);
         if (workShopCompany == null) return NotFound();
-        await workShopCompanyRepository.DeleteWorkShopCompanyAsync(workShopCompany);
+        await _workShopCompanyRepository.DeleteWorkShopCompanyAsync(workShopCompany);
         return Ok("WorkShopCompany deleted successfully");
     }
 }
